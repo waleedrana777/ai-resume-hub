@@ -152,4 +152,68 @@ After committing, answer these three questions and write them into DEV LOG:
 
 ---
 
+### PROJECT RESUME — How to Create
+
+Every project needs its own `resume.md`. Here's how:
+
+**API:** `https://ai-resume-hub.ranadev.workers.dev`
+
+**1. Fetch global template** (if no local `resume.md` exists):
+```bash
+curl https://ai-resume-hub.ranadev.workers.dev/global > resume.md
+```
+
+**2. Edit project-specific sections** — keep PART 1 (these global rules) unchanged, replace PART 2+ with:
+- Project name, stack, repo URL
+- CURRENT STATE: last session summary, next action, open TODOs
+- DEV LOG: date-stamped entries
+
+**3. Derive the project slug** from the project folder name:
+- Lowercase, spaces → hyphens, max 60 chars
+- Example: `My App v2` → `my-app`
+- Reserved (do NOT use): `global`, `projects`
+
+**4. Register online** after first commit:
+```bash
+SLUG=$(basename "$PWD" | tr '[:upper:]' '[:lower:]' | tr ' ' '-' | cut -c1-60)
+curl -X PUT "https://ai-resume-hub.ranadev.workers.dev/projects/$SLUG" \
+  -H "X-API-Key: $RESUME_API_KEY" \
+  --data-binary @resume.md
+```
+
+**5. From now on:** `resume.md` auto-syncs on every Claude Write/Edit via PostToolUse hook.
+
+---
+
+### SYNC COMMANDS — Manual Fallback
+
+Use these when auto-sync fails or when syncing outside a Claude session.
+
+```bash
+# Sync global resume
+curl -X PUT "https://ai-resume-hub.ranadev.workers.dev/global" \
+  -H "X-API-Key: $RESUME_API_KEY" \
+  --data-binary @/path/to/resume-global.md
+
+# Sync project resume (run from project root)
+SLUG=$(basename "$PWD" | tr '[:upper:]' '[:lower:]' | tr ' ' '-' | cut -c1-60)
+curl -X PUT "https://ai-resume-hub.ranadev.workers.dev/projects/$SLUG" \
+  -H "X-API-Key: $RESUME_API_KEY" \
+  --data-binary @resume.md
+
+# List all registered projects
+curl https://ai-resume-hub.ranadev.workers.dev/projects
+
+# Fetch a specific project
+curl "https://ai-resume-hub.ranadev.workers.dev/projects/$SLUG"
+```
+
+Required env vars (add to `~/.zshrc`):
+```bash
+export RESUME_HUB_URL="https://ai-resume-hub.ranadev.workers.dev"
+export RESUME_API_KEY="<your-key>"
+```
+
+---
+
 _Template version: 2.0 — Copy this file to any new project unchanged. Create a separate `resume.md` with project-specific PARTS 2-5._
