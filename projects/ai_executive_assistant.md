@@ -251,6 +251,9 @@ Every session should leave the codebase simpler and faster, not just feature-com
 - [ ] Add macOS/Windows/Linux build workflows
 - [ ] Test Flutter light mode on device — verify dialog colors use theme correctly
 - [ ] Flutter offline/graceful degradation when API cold-starts
+- [ ] Flutter offline/graceful degradation — connectivity service, offline banner, retry wrapper, error states
+- [ ] Desktop build workflows — macOS, Windows, Linux GitHub Actions (matching Android pattern)
+- [ ] iOS Shortcuts API — simplified endpoints for Siri Shortcuts (/api/shortcuts/quick-add, /remind-me, /ask, /tasks, /next, /done, /log-sleep)
 - [ ] n8n integration — connect Python API webhooks/triggers to n8n workflows
 - [ ] iOS Shortcuts integration — create Shortcuts that hit the Python API (add task, start timer, log sleep, etc.)
 
