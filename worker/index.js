@@ -110,5 +110,10 @@ function b64decode(b64) {
 
 function b64encode(str) {
   const bytes = new TextEncoder().encode(str);
-  return btoa(String.fromCharCode(...bytes));
+  let binary = '';
+  const chunk = 8192;
+  for (let i = 0; i < bytes.length; i += chunk) {
+    binary += String.fromCharCode(...bytes.subarray(i, i + chunk));
+  }
+  return btoa(binary);
 }
