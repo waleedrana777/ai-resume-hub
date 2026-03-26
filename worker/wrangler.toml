@@ -1,3 +1,4 @@
+# Deployed at: https://ai-resume-hub.ranadev.workers.dev
 name = "ai-resume-hub"
 main = "index.js"
 compatibility_date = "2024-01-01"
