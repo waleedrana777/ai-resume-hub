@@ -96,3 +96,102 @@ describe('GET /projects/:name', () => {
     expect(await res.text()).toBe('reserved slug');
   });
 });
+
+// ─── PUT /global ───────────────────────────────────────────
+describe('PUT /global', () => {
+  it('creates file when it does not exist', async () => {
+    vi.spyOn(globalThis, 'fetch').mockImplementation(async (url, options) => {
+      if (options?.method === 'GET') return new Response('', { status: 404 });
+      return new Response('{}', { status: 201 });
+    });
+    const res = await worker.fetch(req('PUT', '/global', {
+      headers: { 'X-API-Key': 'test-api-key' },
+      body: '# new content',
+    }), ENV);
+    expect(res.status).toBe(200);
+    expect(await res.text()).toBe('updated');
+  });
+
+  it('sends sha when file already exists', async () => {
+    let putBody;
+    vi.spyOn(globalThis, 'fetch').mockImplementation(async (url, options) => {
+      if (options?.method === 'GET') {
+        return new Response(JSON.stringify({ content: b64('old'), sha: 'existing-sha' }), { status: 200 });
+      }
+      putBody = JSON.parse(options.body);
+      return new Response('{}', { status: 200 });
+    });
+    await worker.fetch(req('PUT', '/global', {
+      headers: { 'X-API-Key': 'test-api-key' },
+      body: '# updated content',
+    }), ENV);
+    expect(putBody.sha).toBe('existing-sha');
+  });
+
+  it('returns 401 with missing API key', async () => {
+    const res = await worker.fetch(req('PUT', '/global', { body: 'content' }), ENV);
+    expect(res.status).toBe(401);
+  });
+
+  it('returns 401 with wrong API key', async () => {
+    const res = await worker.fetch(req('PUT', '/global', {
+      headers: { 'X-API-Key': 'wrong-key' },
+      body: 'content',
+    }), ENV);
+    expect(res.status).toBe(401);
+  });
+});
+
+// ─── PUT /projects/:name ────────────────────────────────────
+describe('PUT /projects/:name', () => {
+  it('creates project file', async () => {
+    vi.spyOn(globalThis, 'fetch').mockImplementation(async (url, options) => {
+      if (options?.method === 'GET') return new Response('', { status: 404 });
+      return new Response('{}', { status: 201 });
+    });
+    const res = await worker.fetch(req('PUT', '/projects/my-app', {
+      headers: { 'X-API-Key': 'test-api-key' },
+      body: '# My App Resume',
+    }), ENV);
+    expect(res.status).toBe(200);
+    expect(await res.text()).toBe('updated');
+  });
+
+  it('returns 400 for reserved slug "projects"', async () => {
+    const res = await worker.fetch(req('PUT', '/projects/projects', {
+      headers: { 'X-API-Key': 'test-api-key' },
+      body: 'content',
+    }), ENV);
+    expect(res.status).toBe(400);
+  });
+});
+
+// ─── DELETE /projects/:name ─────────────────────────────────
+describe('DELETE /projects/:name', () => {
+  it('deletes an existing project', async () => {
+    vi.spyOn(globalThis, 'fetch').mockImplementation(async (url, options) => {
+      if (options?.method === 'GET') {
+        return new Response(JSON.stringify({ sha: 'del-sha' }), { status: 200 });
+      }
+      return new Response('{}', { status: 200 });
+    });
+    const res = await worker.fetch(req('DELETE', '/projects/old-app', {
+      headers: { 'X-API-Key': 'test-api-key' },
+    }), ENV);
+    expect(res.status).toBe(200);
+    expect(await res.text()).toBe('deleted');
+  });
+
+  it('returns 404 when project does not exist', async () => {
+    vi.spyOn(globalThis, 'fetch').mockImplementation(async () => new Response('', { status: 404 }));
+    const res = await worker.fetch(req('DELETE', '/projects/ghost', {
+      headers: { 'X-API-Key': 'test-api-key' },
+    }), ENV);
+    expect(res.status).toBe(404);
+  });
+
+  it('returns 401 without API key', async () => {
+    const res = await worker.fetch(req('DELETE', '/projects/some-app'), ENV);
+    expect(res.status).toBe(401);
+  });
+});
