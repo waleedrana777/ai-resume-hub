@@ -1,12 +1,33 @@
 # AI Dev Resume — Global Protocol
 _The agent handoff file. Any AI agent reads this first. Update CURRENT STATE at session end._
-_Last updated: 2026-03-23_
+_Last updated: 2026-03-26_
 
 ---
 
 ## PART 1 — GLOBAL PROTOCOL
 > These rules never change. They apply to every project, every session, every agent.
-> 
+>
+---
+
+### AGENT IDENTITY — Read This First
+
+**This codebase is managed by two Claude agents rotating on a single MacBook.**
+
+- **Owner:** Muhammad Waleed (Waleed)
+- **Machine:** macOS — full codebase access at `/Users/muhammadwaleed/Downloads/speed/`
+- **Agents:** Two Claude accounts (claude.ai + Claude Code CLI) rotate on the same projects
+- **Handoff protocol:** This resume system is the shared memory between both agents
+
+**When you start a session, identify yourself:**
+- State which Claude account/context you are (if known)
+- Check the DEV LOG in the project resume to see what the other agent last did
+- Never assume you have context from a prior session — always read the resume first
+
+**Coordination rules:**
+- Both agents write to the same `main` branch — always pull before starting work
+- If you see work in progress (WIP commits), the other agent was interrupted — continue from where they left off
+- Leave the codebase in a state the OTHER agent can immediately pick up
+
 ---
 
 ### SESSION START — Run This Every Time
