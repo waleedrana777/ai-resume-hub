@@ -238,3 +238,27 @@ export RESUME_API_KEY="<your-key>"
 ---
 
 _Template version: 2.0 — Copy this file to any new project unchanged. Create a separate `resume.md` with project-specific PARTS 2-5._
+
+---
+
+### RELEASES HUB — Standard for All Projects
+
+Every project that produces a binary or deployable UI must have a GitHub Actions release workflow. The central releases hub at `waleedrana777/releases-hub` (GitHub Pages) auto-fetches release data from the GitHub API and only shows projects that have published releases.
+
+**Rule: Before adding a project to the releases hub, it must have a working release workflow.**
+
+**Desktop apps (Tauri, Swift, Flutter, Electron):**
+- Add `.github/workflows/release.yml` triggered on `push: tags: v*`
+- Tauri apps use `tauri-apps/tauri-action@v0` (handles macOS DMG, Windows EXE, Linux AppImage automatically)
+- Swift apps: build with `swift build -c release`, package as DMG with `create-dmg`, publish with `softprops/action-gh-release@v2`
+- Tag convention: `git tag v1.0.0 && git push origin v1.0.0`
+
+**Web apps (Vite, Next.js):**
+- Add `.github/workflows/deploy.yml` triggered on push to `main`
+- Vite: set `base: '/<repo-name>/'` in `vite.config.ts`, upload `dist/` to GitHub Pages
+- Next.js: set `output: 'export'`, `basePath: '/<repo-name>'`, `assetPrefix: '/<repo-name>'` in `next.config.ts`, upload `out/` to GitHub Pages
+- No platform lock — GitHub Pages is the default; the `dist/`/`out/` artifact deploys anywhere
+- Next.js API routes do NOT work on GitHub Pages — note this in next.config.ts
+
+**Releases hub location:** `/Users/muhammadwaleed/Downloads/speed/releases-hub/`
+Hub repo: `waleedrana777/releases-hub` — edit `WEB_APPS` / `APPS` arrays in `index.html` to add new projects.
