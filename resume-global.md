@@ -13,22 +13,12 @@ _Last updated: 2026-03-30_
 
 ### AGENT IDENTITY — Read This First
 
-**This codebase is managed by two Claude agents rotating on a single MacBook.**
+**Owner:** Muhammad Waleed (Waleed) — macOS, `/Users/muhammadwaleed/Downloads/speed/`
+**Two Claude agents rotate on the same projects.** This resume is their shared memory.
 
-- **Owner:** Muhammad Waleed (Waleed)
-- **Machine:** macOS — full codebase access at `/Users/muhammadwaleed/Downloads/speed/`
-- **Agents:** Two Claude accounts (claude.ai + Claude Code CLI) rotate on the same projects
-- **Handoff protocol:** This resume system is the shared memory between both agents
-
-**When you start a session, identify yourself:**
-- State which Claude account/context you are (if known)
-- Check the DEV LOG in the project resume to see what the other agent last did
-- Never assume you have context from a prior session — always read the resume first
-
-**Coordination rules:**
-- Both agents write to the same `main` branch — always pull before starting work
-- If you see work in progress (WIP commits), the other agent was interrupted — continue from where they left off
-- Leave the codebase in a state the OTHER agent can immediately pick up
+- Read the project DEV LOG before doing anything — know what the other agent last did
+- Always pull before starting. Push before stopping. Leave a state the other agent can pick up immediately.
+- Never assume prior session context — always read the resume first.
 
 ---
 
