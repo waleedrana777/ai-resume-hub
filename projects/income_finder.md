@@ -2,7 +2,7 @@
 
 ## What This Is
 
-A map-first mobile app (Flutter) that shows jobs and professionals on a map in Italy. Supabase backend, Mapbox maps. Apple Find My / Snapchat Map design inspiration.
+A map-first mobile app (Flutter) that shows jobs and professionals on a map in Italy. Supabase backend, MapTiler maps (via flutter_map). Apple Find My / Snapchat Map design inspiration.
 
 ## Current State (2026-03-29)
 
