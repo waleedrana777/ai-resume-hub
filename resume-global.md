@@ -407,3 +407,23 @@ Every project that produces a binary or deployable UI must have a GitHub Actions
 
 **Releases hub location:** `/Users/muhammadwaleed/Downloads/speed/releases-hub/`
 Hub repo: `waleedrana777/releases-hub` — edit `WEB_APPS` / `APPS` arrays in `index.html` to add new projects.
+
+---
+
+### FLUTTER PROJECT PIPELINE — Standard for All Flutter Apps
+
+Every Flutter project must include these two steps before first build:
+
+1. **Random app icon** — Never ship the default Flutter icon. Generate a unique icon (`flutter_launcher_icons` package), place at `assets/icon/app_icon.png`, run `flutter pub run flutter_launcher_icons`.
+
+2. **`auto_dmg.sh`** — Copy into every Flutter project root. Auto-detects app name from `pubspec.yaml`, builds macOS, creates polished DMG.
+   - Source template: `/Users/muhammadwaleed/Downloads/speed/ai_executive_assistant/assist_app/auto_dmg.sh`
+   - `cp <template-path>/auto_dmg.sh ./ && chmod +x auto_dmg.sh`
+
+**Build & launch:**
+```bash
+./auto_dmg.sh        # Build macOS DMG
+flutter run -d macos # Run directly without DMG
+```
+
+Full guide: `/tmp/flutter-pipeline-guide.md` (also saved at project level when needed)
