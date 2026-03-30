@@ -187,6 +187,20 @@ After committing, answer these three questions and write them into DEV LOG:
 
 ---
 
+### WEEKLY AUDIT — Global Resume Efficiency
+
+**Last audit: 2026-03-30** | **Next: 2026-04-06**
+
+Once per week, audit this file. Goal: fewer words, same effect. Long instructions get forgotten mid-conversation as context grows — only terse rules survive.
+
+- Cut any section that restates what the model already does by default
+- Merge overlapping rules
+- Delete examples if the rule is clear without them
+- If a section is >10 lines, ask: can this be 3?
+- Never add — only simplify or remove
+
+---
+
 ### PROJECT RESUME — How to Create
 
 Every project needs its own `resume.md`. Here's how:
