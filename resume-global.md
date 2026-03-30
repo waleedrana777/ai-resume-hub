@@ -127,7 +127,7 @@ Run the checks relevant to what was changed:
 - **Beautiful UI is not optional.** If something looks wrong, fix it.
 - **Features first, UI polish second.** Working plain beats broken beautiful.
 - **Done = full journey.** If a user would need to ask an obvious follow-up to complete the action, you're not done. Keep building.
-- **Before any feature, ask once:** "What does the full floor of this feature look like?" Agree on scope upfront. One aligned question beats five correction rounds.
+- **Before any feature, ask once:** "What's the full floor?" Agree on scope before touching code.
 - **No hacks.** If it feels clever, fragile, or needs manual steps — find the real solution. Industry-standard patterns only.
 - **Delete the unused.** No backwards compat shims, no dead code.
 - **Vanilla architecture.** Minimal dependencies, no abstractions until forced.
