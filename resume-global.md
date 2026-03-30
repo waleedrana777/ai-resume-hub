@@ -155,10 +155,7 @@ Every session should leave the codebase simpler and faster. Apply these checks n
 - Unnecessary API calls → targeted refresh
 - Silent error swallowing → surface to user
 
-**When NOT to optimize:**
-- Don't add new packages to "improve performance" unless necessary
-- Don't restructure working code that isn't causing real problems
-- Keep architecture simple — vanilla patterns beat clever abstractions
+**Don't optimize:** working code that isn't a real problem, or by adding packages. Vanilla beats clever.
 
 ---
 
