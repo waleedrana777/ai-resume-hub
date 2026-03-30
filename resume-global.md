@@ -173,18 +173,7 @@ After committing, answer these three questions and write them into DEV LOG:
 
 **Last audit: 2026-03-30** | **Next: 2026-04-06**
 
-Once per week, audit this file. Two constraints govern every edit:
-
-**1. Verbose instructions die mid-conversation.** As context grows, the model reverts to default behavior. Only short, direct rules survive the full session. If an instruction needs a paragraph to explain itself, it will be ignored by token 80k. Rewrite it in one line or delete it.
-
-**2. Rewrite as v2.0, not v1.1.** Don't patch — reimagine. Imagine shipping this file as a fresh v2.0 release: radically better expression, but the original intended behavior must be identical. A rewrite that changes what a rule *does* is a bug, not an optimization. A rule that took 10 lines in v1 should take 2 in v2 — not by cutting corners, but by finding the precise words that produce the same result.
-
-Audit checklist:
-- Cut anything the model does by default
-- Merge overlapping rules into one
-- If a section is >10 lines, rewrite it in 3
-- Delete examples when the rule is clear without them
-- Never add — only simplify or remove
+Once per week, audit this file. Short rules survive long conversations — verbose ones don't. Rewrite for precision, not length. Cut anything the model does by default. Merge overlapping rules. Never add without removing something weaker.
 
 ---
 
