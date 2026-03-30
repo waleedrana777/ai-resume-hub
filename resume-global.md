@@ -195,7 +195,7 @@ Once per week, audit this file. Two constraints govern every edit:
 
 **1. Verbose instructions die mid-conversation.** As context grows, the model reverts to default behavior. Only short, direct rules survive the full session. If an instruction needs a paragraph to explain itself, it will be ignored by token 80k. Rewrite it in one line or delete it.
 
-**2. Rewrite as v2.0, not v1.1.** Don't patch — reimagine. Every rule must do the exact same thing functionally, but the language should be the best possible version of that instruction. Imagine shipping this file as a fresh v2.0 release: same features, radically better expression. A rule that took 10 lines in v1 should take 2 in v2 — not by cutting corners, but by finding the precise words.
+**2. Rewrite as v2.0, not v1.1.** Don't patch — reimagine. Imagine shipping this file as a fresh v2.0 release: radically better expression, but the original intended behavior must be identical. A rewrite that changes what a rule *does* is a bug, not an optimization. A rule that took 10 lines in v1 should take 2 in v2 — not by cutting corners, but by finding the precise words that produce the same result.
 
 Audit checklist:
 - Cut anything the model does by default
