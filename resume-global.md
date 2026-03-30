@@ -145,8 +145,9 @@ Run the checks relevant to what was changed:
 - **Verify, don't assume.** Run the thing. Look at the output. Don't guess it works.
 - **One logical change per commit.** Atomic commits make bisect fast.
 - **Beautiful UI is not optional.** If something looks wrong, fix it.
-- **No backwards compat hacks.** If something is unused, delete it.
-- **Simple architecture.** Vanilla patterns, minimal dependencies.
+- **No hacks.** If it feels clever, fragile, or needs manual steps — find the real solution. Industry-standard patterns only.
+- **Delete the unused.** No backwards compat shims, no dead code.
+- **Vanilla architecture.** Minimal dependencies, no abstractions until forced.
 
 ---
 
@@ -278,22 +279,16 @@ _Template version: 2.0 — Copy this file to any new project unchanged. Create a
 
 ### RELEASES HUB — Standard for All Projects
 
-Every project that produces a binary or deployable UI must have a GitHub Actions release workflow. The central releases hub at `waleedrana777/releases-hub` (GitHub Pages) auto-fetches release data from the GitHub API and only shows projects that have published releases.
+**Binary delivery: Cloudflare R2.** All app binaries (DMG, APK) are uploaded to R2 with a `latest.json` manifest. Apps read the manifest directly from R2 CDN — no backend involved.
 
-**Rule: Before adding a project to the releases hub, it must have a working release workflow.**
+**R2 bucket:** `assist-releases` at `https://pub-e0444ef9ed9046748280b61f35081720.r2.dev`
 
-**Desktop apps (Tauri, Swift, Flutter, Electron):**
-- Add `.github/workflows/release.yml` triggered on `push: tags: v*`
-- Tauri apps use `tauri-apps/tauri-action@v0` (handles macOS DMG, Windows EXE, Linux AppImage automatically)
-- Swift apps: build with `swift build -c release`, package as DMG with `create-dmg`, publish with `softprops/action-gh-release@v2`
-- Tag convention: `git tag v1.0.0 && git push origin v1.0.0`
+**Release protocol:** See `/Users/muhammadwaleed/Downloads/speed/r2-release-guide.md`
 
 **Web apps (Vite, Next.js):**
-- Add `.github/workflows/deploy.yml` triggered on push to `main`
-- Vite: set `base: '/<repo-name>/'` in `vite.config.ts`, upload `dist/` to GitHub Pages
-- Next.js: set `output: 'export'`, `basePath: '/<repo-name>'`, `assetPrefix: '/<repo-name>'` in `next.config.ts`, upload `out/` to GitHub Pages
-- No platform lock — GitHub Pages is the default; the `dist/`/`out/` artifact deploys anywhere
-- Next.js API routes do NOT work on GitHub Pages — note this in next.config.ts
+- GitHub Pages via `.github/workflows/deploy.yml` on push to `main`
+- Vite: `base: '/<repo-name>/'` in `vite.config.ts`
+- Next.js: `output: 'export'`, `basePath: '/<repo-name>'` in `next.config.ts`
 
 **Releases hub location:** `/Users/muhammadwaleed/Downloads/speed/releases-hub/`
 Hub repo: `waleedrana777/releases-hub` — edit `WEB_APPS` / `APPS` arrays in `index.html` to add new projects.
@@ -306,17 +301,17 @@ Every Flutter project must include these two steps before first build:
 
 1. **Random app icon** — Never ship the default Flutter icon. Generate a unique icon (`flutter_launcher_icons` package), place at `assets/icon/app_icon.png`, run `flutter pub run flutter_launcher_icons`.
 
-2. **`auto_dmg.sh`** — Copy into every Flutter project root. Auto-detects app name from `pubspec.yaml`, builds macOS, creates polished DMG.
-   - Source template: `/Users/muhammadwaleed/Downloads/speed/ai_executive_assistant/assist_app/auto_dmg.sh`
-   - `cp <template-path>/auto_dmg.sh ./ && chmod +x auto_dmg.sh`
+2. **`release.sh`** — Copy into every Flutter project root. Builds + uploads to R2 + updates manifest in one command.
+   - Source template: `/Users/muhammadwaleed/Downloads/speed/ai_executive_assistant/assist_app/release.sh`
+   - `cp <template-path>/release.sh ./ && chmod +x release.sh`
 
-**Build & launch:**
+**Build & release:**
 ```bash
-./auto_dmg.sh        # Build macOS DMG
+./release.sh apk     # Build APK + publish to R2
+./release.sh macos   # Build DMG + publish to R2
+./release.sh all     # Both platforms
 flutter run -d macos # Run directly without DMG
 ```
-
-Full guide: `/tmp/flutter-pipeline-guide.md` (also saved at project level when needed)
 
 ---
 
