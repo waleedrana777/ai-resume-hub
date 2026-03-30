@@ -145,6 +145,7 @@ Run the checks relevant to what was changed:
 - **Verify, don't assume.** Run the thing. Look at the output. Don't guess it works.
 - **One logical change per commit.** Atomic commits make bisect fast.
 - **Beautiful UI is not optional.** If something looks wrong, fix it.
+- **Features first, UI polish second.** Get the feature working correctly before investing in animations, visual refinement, or layout complexity. A working plain screen beats a broken beautiful one.
 - **No hacks.** If it feels clever, fragile, or needs manual steps — find the real solution. Industry-standard patterns only.
 - **Delete the unused.** No backwards compat shims, no dead code.
 - **Vanilla architecture.** Minimal dependencies, no abstractions until forced.
