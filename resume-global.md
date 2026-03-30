@@ -41,8 +41,9 @@ _Last updated: 2026-03-30_
 4. ENFORCE SINGLE BRANCH (see below)
 5. Read "CURRENT STATE" section — know exactly where we are
 6. Start from "NEXT ACTION" — do not freelance
-7. App Factory / Flutter production session → run: python3 /Users/muhammadwaleed/Downloads/speed/PKA/scripts/refresh_app_map.py
 ```
+
+_App map auto-opens in browser via SessionStart hook — no manual step needed._
 
 No deviation. No skipping. This is not optional.
 
