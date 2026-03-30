@@ -207,9 +207,9 @@ Every session should leave the codebase simpler and faster, not just feature-com
 - **Verify, don't assume.** Run the thing. Look at the output. Don't guess it works.
 - **One logical change per commit.** Atomic commits make bisect fast.
 - **Beautiful UI is not optional.** This project's goal is ultra-fast development of beautiful apps. If something looks wrong, fix it.
-- **No backwards compat hacks.** If something is unused, delete it.
-- **Simple architecture.** Vanilla patterns, minimal dependencies. Tools must be simple.
-- **No hacks. Ever.** If the solution feels clever, fragile, or requires manual steps that could be automated — it's wrong. Use industry-standard patterns. One command should do the job. If it takes a paragraph to explain the workaround, find the real solution.
+- **No hacks.** If it feels clever, fragile, or needs manual steps — find the real solution. Industry-standard patterns only.
+- **Delete the unused.** No backwards compat shims, no dead code.
+- **Vanilla architecture.** Minimal dependencies, no abstractions until forced.
 
 ---
 
