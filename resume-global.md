@@ -146,6 +146,151 @@ Run the checks relevant to what was changed:
 
 ---
 
+### MODEL ROUTING PROTOCOL — Token Efficiency
+
+**Problem:** Opus 4.6 weekly limits run out fast when Opus tokens are wasted on scaffolding, boilerplate, and git operations that don't require deep reasoning.
+
+**Solution:** Every agent self-identifies its model and routes tasks to the cheapest model that can handle them correctly, using the `Agent` tool's `model` parameter (`"opus"`, `"sonnet"`, `"haiku"`).
+
+---
+
+#### Step 1 — Self-Identify at Session Start
+
+Before starting any work, determine and declare your model:
+
+```
+"Running as [Opus 4.6 / Sonnet 4.6 / Haiku 4.5]. Applying model routing protocol."
+```
+
+---
+
+#### Step 2 — Classify Every Task Before Executing
+
+Before writing code or running commands, classify the task:
+
+**OPUS-ONLY tasks** (require deep reasoning — never delegate to Sonnet):
+| Task | Signal |
+|------|--------|
+| Architecture / system design | "How should this be structured?" |
+| Complex debugging | Race conditions, state corruption, subtle logic errors |
+| Code review / finding non-obvious issues | "Is this implementation correct?" |
+| API and data model design | Schema decisions, endpoint design, state shape |
+| Evaluating tradeoffs between approaches | "Should we use X or Y?" |
+| Designing the implementation plan itself | Breaking a feature into steps |
+
+**SONNET tasks** (execution from a clear spec — never waste Opus on these):
+| Task | Signal |
+|------|--------|
+| Creating files from a defined spec | "Create a widget that does X with fields Y, Z" |
+| Writing boilerplate | Models, providers, services, screen scaffolds |
+| Writing tests from existing code | "Write tests for this function" |
+| Simple bug fixes | Missing imports, typos, null checks, off-by-one |
+| Git operations | Commit, push, merge, branch cleanup |
+| Refactoring with clear instructions | "Rename X to Y", "Extract this into a method" |
+| Adding/removing dependencies | pubspec changes, package installs |
+| File exploration and search | Reading files, grepping, globbing |
+| CSS/styling/layout tweaks | Spacing, colors, font sizes |
+| Documentation and comments | README updates, docstrings |
+
+**Decision rule:** If the task has a single correct answer that a competent developer could produce without architectural judgment → Sonnet. If it requires choosing between valid approaches or understanding non-obvious consequences → Opus.
+
+---
+
+#### Step 3 — Route Based on Your Identity
+
+**If you ARE Opus and the task is a Sonnet task:**
+
+Do NOT execute it yourself. Delegate:
+
+```
+Agent(
+  model: "sonnet",
+  description: "scaffold [what]",
+  prompt: "[Complete, self-contained spec. Include ALL context the subagent needs —
+           file paths, data structures, naming conventions, exact requirements.
+           The subagent has NO conversation history.]"
+)
+```
+
+Critical rules for Opus delegation:
+- **Never** create file scaffolds yourself — spawn Sonnet
+- **Never** write repetitive widget/model/test code yourself — spawn Sonnet
+- **Never** run git commit/push yourself — spawn Sonnet
+- **Review** every Sonnet result before moving on (this is an Opus task)
+- **Batch** Sonnet tasks: don't spawn 5 agents for 5 files — spawn 1 agent for all 5
+
+**If you ARE Sonnet and the task is an Opus task:**
+
+Do NOT attempt it yourself. Escalate:
+
+```
+Agent(
+  model: "opus",
+  description: "design [what]",
+  prompt: "[Specific question with full context. Ask for a concrete deliverable:
+           a plan, a decision, a code review, an architecture. Not open-ended.]"
+)
+```
+
+Critical rules for Sonnet escalation:
+- **Do** escalate architecture decisions — don't guess
+- **Do** escalate when you're choosing between 2+ valid approaches
+- **Do** escalate code review of complex logic
+- **Don't** escalate simple bugs you can see the fix for
+- **Don't** escalate if you have a clear spec to follow
+- **Apply** the Opus result yourself (execution is your job)
+
+**If you ARE the correct model for the task:**
+
+Execute it directly. No delegation needed.
+
+---
+
+#### Step 4 — Token Budget Awareness
+
+**Opus sessions target:** ≥70% of tokens on planning, design, review, complex logic. ≤30% on execution. If Opus is writing boilerplate → stop, delegate.
+
+**Sonnet sessions target:** Spend freely on execution. Only escalate to Opus when genuinely uncertain about the right approach — not just the right syntax.
+
+**Subagent output rule:** Keep subagent return values concise. A Sonnet agent creating 5 files should NOT return all file contents — just confirm what was created. The parent reads files directly if needed.
+
+---
+
+#### Examples — Correct Routing
+
+```
+User: "Add a settings screen with dark mode toggle, font size slider, and notification preferences"
+
+Opus session:
+  1. [OPUS] Design the settings data model and state management approach
+  2. [OPUS → Sonnet] "Create lib/screens/settings_screen.dart with these specs: [full spec from step 1]"
+  3. [OPUS → Sonnet] "Create lib/providers/settings_provider.dart with these fields: [exact fields]"
+  4. [OPUS] Review Sonnet output, check for state management issues
+  5. [OPUS → Sonnet] "Fix [specific issues found in review]"
+  6. [OPUS → Sonnet] "Commit: 'Add settings screen with dark mode, font size, notifications'"
+
+Sonnet session:
+  1. [Sonnet → Opus] "Design settings architecture: what state manager, what persistence, what structure?"
+  2. [Sonnet] Create all files following Opus plan
+  3. [Sonnet → Opus] "Review these implementations for issues: [paste key logic]"
+  4. [Sonnet] Apply fixes, commit, push
+```
+
+```
+User: "The map markers disappear when switching tabs"
+
+Opus session:
+  1. [OPUS] Read relevant files, diagnose the state lifecycle bug (this IS the Opus task)
+  2. [OPUS → Sonnet] "Apply this fix: in map_provider.dart line 45, change X to Y. Then commit."
+
+Sonnet session:
+  1. [Sonnet] Read files, attempt diagnosis
+  2. [Sonnet → Opus] "Markers disappear on tab switch. State is in MapProvider. Here's the relevant code: [paste]. What's the root cause?"
+  3. [Sonnet] Apply the fix Opus identifies, commit, push
+```
+
+---
+
 ### ARCHITECTURE OPTIMIZATION — Built-In, Not Bolted-On
 
 Every session should leave the codebase simpler and faster. Apply these checks naturally while building:
