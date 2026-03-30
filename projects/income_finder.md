@@ -24,16 +24,15 @@ A map-first mobile app (Flutter) that shows jobs and professionals on a map in I
 
 ### Files That Matter
 ```
-lib/main.dart                          — Entry point, Supabase init, auth wrapper
-lib/screens/map_screen.dart            — Main screen: map + bottom nav
-lib/screens/auth_screen.dart           — Sign in / sign up
-lib/widgets/map_widget.dart            — Map provider switch (Mapbox/OSM)
-lib/widgets/maps/mapbox_map_widget.dart — Mapbox implementation
-lib/widgets/maps/openstreetmap_map_widget.dart — OSM fallback
+lib/main.dart                          — Entry point, Supabase init, straight to MapScreen
+lib/screens/map_screen.dart            — Main screen: map + bottom nav (Rome default)
+lib/screens/auth_screen.dart           — Sign in / sign up (currently bypassed)
+lib/widgets/map_widget.dart            — Thin pass-through to MapTiler
+lib/widgets/maps/maptiler_map_widget.dart — THE map (MapTiler tiles, emoji markers, zoom)
 lib/widgets/pin_detail_popup.dart      — Dictionary-style pin detail dialog
 lib/models/map_item.dart               — Generic map item (job | person)
 lib/models/user.dart                   — User model
-lib/providers/map_provider.dart        — Map state + sample data
+lib/providers/map_provider.dart        — Map state + sample data (Rome center)
 lib/providers/auth_provider.dart       — Auth state
 lib/services/supabase_service.dart     — Supabase operations
 lib/services/location_service.dart     — GPS / location permissions
