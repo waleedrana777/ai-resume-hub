@@ -60,7 +60,7 @@ git branch -d claude/<branch-name>   # optional cleanup
 # Now you are on main. Stay on main.
 ```
 
-**Why this matters:** The user runs two agents in rotation. When Agent A runs out of tokens, Agent B picks up. If Agent A left uncommitted changes on a worktree branch, Agent B cannot find them. `main` is the only shared truth.
+`main` is the only shared truth between agents.
 
 ---
 
