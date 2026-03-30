@@ -342,9 +342,8 @@ User
 | GET | `/api/calendar/auth/url` | OAuth URL |
 | GET | `/api/calendar/auth/google-callback` | Browser redirect handler |
 | GET | `/api/calendar/status` | Connection check |
-| GET | `/api/version` | Check GitHub Releases for updates |
 | POST | `/api/notify` | Send Telegram notification |
-| POST | `/api/notify/release` | Send latest GitHub Release links via Telegram |
+| POST | `/api/notify/release` | Send release links via Telegram (reads R2 manifest) |
 | POST | `/api/transcribe` | Voice → text (Groq Whisper, multipart audio) |
 | GET | `/api/sleep` | Sleep log (`?days=N`) |
 | POST | `/api/sleep` | Log bedtime |
