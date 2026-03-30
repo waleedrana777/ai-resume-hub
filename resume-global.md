@@ -41,6 +41,7 @@ _Last updated: 2026-03-30_
 4. ENFORCE SINGLE BRANCH (see below)
 5. Read "CURRENT STATE" section — know exactly where we are
 6. Start from "NEXT ACTION" — do not freelance
+7. App Factory / Flutter production session → run: python3 /Users/muhammadwaleed/Downloads/speed/PKA/scripts/refresh_app_map.py
 ```
 
 No deviation. No skipping. This is not optional.
@@ -315,3 +316,22 @@ flutter run -d macos # Run directly without DMG
 ```
 
 Full guide: `/tmp/flutter-pipeline-guide.md` (also saved at project level when needed)
+
+---
+
+### APP FACTORY SESSION START
+
+When entering any App Factory or Flutter production session, run this immediately after step 6:
+
+```bash
+python3 /Users/muhammadwaleed/Downloads/speed/PKA/scripts/refresh_app_map.py
+```
+
+This script scans all app repos in `/speed/`, classifies each by production stage (Shipped / Release Ready / Deployed / Library), regenerates `PKA/owners-inbox/app-journey-map.html` from live git data, and opens it in the browser.
+
+**Signals that this is an App Factory session:**
+- Working on any app in `/speed/` (Flutter, Tauri, Swift, React)
+- User mentions "factory", "ship", "pipeline", "app", "release", "production"
+- Project resume shows active App Factory work
+
+**Keep the map current:** Re-run the script any time an app is tagged, a workflow is added, or a new app is created.
