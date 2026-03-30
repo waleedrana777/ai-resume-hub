@@ -70,7 +70,7 @@ Instead of fake sample data, onboard users by showing **real popular Instagramme
 ## Tech Stack
 - **Mobile**: Flutter
 - **Backend/DB**: Supabase (Postgres)
-- **Maps**: Mapbox (primary), OpenStreetMap (fallback)
+- **Maps**: MapTiler via flutter_map (single provider)
 - **Auth**: Supabase Auth
 
 ## Decision Log
