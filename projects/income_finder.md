@@ -4,7 +4,7 @@
 
 A map-first mobile app (Flutter) that shows jobs and professionals on a map in Italy. Supabase backend, MapTiler maps (via flutter_map). Apple Find My / Snapchat Map design inspiration.
 
-## Current State (2026-03-29)
+## Current State (2026-03-30)
 
 ### Shipped Core
 - Map screen with emoji pins (jobs = varied emoji, people = walking emoji)
