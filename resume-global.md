@@ -191,12 +191,17 @@ After committing, answer these three questions and write them into DEV LOG:
 
 **Last audit: 2026-03-30** | **Next: 2026-04-06**
 
-Once per week, audit this file. Goal: fewer words, same effect. Long instructions get forgotten mid-conversation as context grows — only terse rules survive.
+Once per week, audit this file. Two constraints govern every edit:
 
-- Cut any section that restates what the model already does by default
-- Merge overlapping rules
-- Delete examples if the rule is clear without them
-- If a section is >10 lines, ask: can this be 3?
+**1. Verbose instructions die mid-conversation.** As context grows, the model reverts to default behavior. Only short, direct rules survive the full session. If an instruction needs a paragraph to explain itself, it will be ignored by token 80k. Rewrite it in one line or delete it.
+
+**2. Rewrite as v2.0, not v1.1.** Don't patch — reimagine. Every rule must do the exact same thing functionally, but the language should be the best possible version of that instruction. Imagine shipping this file as a fresh v2.0 release: same features, radically better expression. A rule that took 10 lines in v1 should take 2 in v2 — not by cutting corners, but by finding the precise words.
+
+Audit checklist:
+- Cut anything the model does by default
+- Merge overlapping rules into one
+- If a section is >10 lines, rewrite it in 3
+- Delete examples when the rule is clear without them
 - Never add — only simplify or remove
 
 ---
