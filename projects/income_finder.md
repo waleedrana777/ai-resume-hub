@@ -19,6 +19,8 @@ A map-first mobile app (Flutter) that shows jobs and professionals on a map in I
 - Removed: sidebar settings drawer, fake network/chat widget, labs screen (AR scanner, AI negotiator, crypto wallet, gig swipe, voice commander), modern UI mode, dual intro screens, glass container widgets, stories/chat/profile modern screens
 - Removed: AppModeProvider, LabsProvider
 - Simplified: main.dart goes straight to AuthWrapper -> MapScreen. No intro carousel, no mode switching.
+- Removed: Mapbox SDK, OpenStreetMap widget, map toggle logic. Single MapTiler implementation remains.
+- Fixed: bottom nav emoji rendering (wrapped in SizedBox), all default locations aligned to Rome
 
 ### Files That Matter
 ```
