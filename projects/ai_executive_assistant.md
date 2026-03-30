@@ -209,6 +209,7 @@ Every session should leave the codebase simpler and faster, not just feature-com
 - **Beautiful UI is not optional.** This project's goal is ultra-fast development of beautiful apps. If something looks wrong, fix it.
 - **No backwards compat hacks.** If something is unused, delete it.
 - **Simple architecture.** Vanilla patterns, minimal dependencies. Tools must be simple.
+- **No hacks. Ever.** If the solution feels clever, fragile, or requires manual steps that could be automated — it's wrong. Use industry-standard patterns. One command should do the job. If it takes a paragraph to explain the workaround, find the real solution.
 
 ---
 
@@ -231,31 +232,26 @@ Every session should leave the codebase simpler and faster, not just feature-com
 ### Active Branch
 `main` — work here directly, never leave code on a worktree branch
 
-### Last Session (2026-03-21, session 3)
-- Voice overhaul: replaced streaming speech_to_text with full audio recording → Groq Whisper transcription
-- New recording overlay UI: pulsing mic, timer, send/cancel buttons
-- TTS via flutter_tts: auto-reads responses, tap speaker icon, TTS toggle in app bar
-- Backend `/api/transcribe` endpoint using Groq Whisper (free tier, OpenAI-compatible)
-- GitHub Actions fixes: Flutter version 3.41.4, removed generate_release_notes, fixed Telegram curl (POST + data-urlencode)
-- Tagged v1.0.3 with all fixes
+### Last Session (2026-03-26)
+- Fixed notes wipe bug: SSE race condition was clearing notes on every event
+- Verified all March 25 code intact (multi-agent chat, agent widgets, create agent flow)
+
+### Previous Sessions
+- **2026-03-25:** Multi-agent chat system — AgentPillTabs, AgentDrawer, AgentBottomSheet (3 UI modes for switching agents), agent cards on Actions screen, handoff mode setting, create new agent flow, refer_to_agent handoff tool, role_name on ChatSession, color_hex on AIRole
+- **2026-03-24:** Custom role creator with AI-refined prompts, voice picker, app renamed to "Assist AI"
+- **2026-03-23:** Day planner + Telegram slash commands, AI roles system (8 personas with persistent memory), Notes as 5th bottom tab, role badge, tap-to-stop-voice, nav reorder
 
 ### Next Action
-1. Set `GROQ_API_KEY` env var on Render (get free key from console.groq.com)
-2. Run POST /api/migrate/ensure-fields on Render
-3. Verify v1.0.3 build succeeds + Telegram notification arrives
+1. Deploy notes fix to Render
+2. Set GROQ_API_KEY on Render
 
 ### Open TODOs
-- [ ] Run migration on Render: POST /api/migrate/ensure-fields (adds sleeplog.source column)
 - [ ] Set GROQ_API_KEY on Render (free from console.groq.com) for voice transcription
-- [ ] Google Calendar OAuth redirect needs deployed Render URL (not just localhost)
-- [ ] Add macOS/Windows/Linux build workflows
-- [ ] Test Flutter light mode on device — verify dialog colors use theme correctly
+- [ ] Run migration on Render: POST /api/migrate/ensure-fields
+- [ ] Google Calendar OAuth redirect needs deployed Render URL
 - [ ] Flutter offline/graceful degradation when API cold-starts
-- [ ] Flutter offline/graceful degradation — connectivity service, offline banner, retry wrapper, error states
-- [ ] Desktop build workflows — macOS, Windows, Linux GitHub Actions (matching Android pattern)
-- [ ] iOS Shortcuts API — simplified endpoints for Siri Shortcuts (/api/shortcuts/quick-add, /remind-me, /ask, /tasks, /next, /done, /log-sleep)
-- [ ] n8n integration — connect Python API webhooks/triggers to n8n workflows
-- [ ] iOS Shortcuts integration — create Shortcuts that hit the Python API (add task, start timer, log sleep, etc.)
+- [ ] Desktop build workflows (macOS, Windows, Linux)
+- [ ] iOS Shortcuts API
 
 ---
 
@@ -362,9 +358,11 @@ Project:      id, name, hidden, created_at
 Task:         id, project_id (FK), title, note, priority, done, done_at, created_at
 Job:          id, job_id, label, cron, fire_at, enabled, recurring, email_template, last_fired
 Motive:       id, content, pinned, position, created_at
-ChatSession:  id, device_id, title, created_at, updated_at
+AIRole:       id, name, label, system_prompt, color_hex, voice, active, created_at
+ChatSession:  id, device_id, title, role_name, created_at, updated_at
 ChatMessage:  id, session_id (FK), role, content, created_at
 EmailLog:     id, job_id, subject, status, sent_at
+SleepLog:     id, bedtime, source, created_at
 Note:         id="main", content, updated_at
 ```
 
@@ -453,10 +451,44 @@ Fix: Added MERGE SAFETY protocol and CRITICAL FILES list.
 
 **RULE-004 — Never delete critical files** (`resume.md`, `CLAUDE.md`, `context/me.md`, `context/routine.md`)
 
+**BUG-006 — Notes wiped by SSE race condition (FIXED)**
+Cause: `loadAll()` re-fetches notes on every SSE event; stale GET overwrites in-flight PUT.
+Fix: Excluded notes from `loadAll()`, guarded NotesTab with dirty flag, fixed Flutter listener accumulation, backend GET no longer creates empty rows.
+
 ---
 
 ## PART 5 — DEV LOG
 > Most recent first. One entry per session. Be honest about what broke.
+
+---
+
+### 2026-03-26 — Notes wipe fix + code integrity check
+
+**Done:** Fixed notes disappearing bug (SSE race condition). Web: removed fetchNotes from loadAll(), added dirty flag to NotesTab. Flutter: moved listener to initState()/dispose(). Backend: GET /api/notes no longer creates empty rows. Verified all March 23-25 code intact.
+
+**What broke:** Notes were being wiped by SSE events triggering loadAll() which re-fetched notes while a PUT was in-flight, overwriting user content with stale data.
+
+**Next:** Deploy to Render. Set GROQ_API_KEY.
+
+---
+
+### 2026-03-25 — Multi-agent chat system + Actions screen overhaul
+
+**Done:** Full multi-agent architecture. role_name on ChatSession, color_hex on AIRole. AgentPillTabs + AgentDrawer + AgentBottomSheet — 3 UI modes for switching agents in chat. Agent cards on Actions screen with handoff mode setting (inline/auto_switch/ask_first). Role colors seeded on startup. Create new agent flow. refer_to_agent handoff tool. Cleanup: removed defunct worktrees, committed brainstorm prototypes.
+
+**Next:** Fix notes wipe bug.
+
+---
+
+### 2026-03-24 — Role creator + app rename
+
+**Done:** Custom role creator with AI-refined prompts, voice picker. App renamed to "Assist AI".
+
+---
+
+### 2026-03-23 — AI roles + Notes + Day planner + Telegram
+
+**Done:** Day planner with auto-fill calendar, hourly Telegram check-ins, smart DND (quiet/deep/trivial modes). Telegram slash commands (/help /plan /agenda /quiet /deep /tasks /up). AI roles system with 8 personas and persistent memory. Notes as 5th bottom tab. Role badge, tap-to-stop-voice, nav reorder.
 
 ---
 
