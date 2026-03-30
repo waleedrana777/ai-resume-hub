@@ -277,7 +277,7 @@ Goal: ultra-fast development cycle, beautiful interfaces, zero bugs.
 | Email | Resend API | — |
 | Calendar | Google Calendar API (OAuth2 + Service Account) | — |
 | Notifications | Telegram Bot + flutter_local_notifications | — |
-| CI/CD | GitHub Actions → GitHub Releases | — |
+| Releases | Cloudflare R2 (S3-compatible CDN) | `./release.sh apk\|macos\|all` |
 
 ### Architecture
 
