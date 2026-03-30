@@ -10,10 +10,10 @@ A map-first mobile app (Flutter) that shows jobs and professionals on a map in I
 - Map screen with emoji pins (jobs = varied emoji, people = walking emoji)
 - Two tabs: Jobs / Job Buddy (bottom nav)
 - Pin tap shows macOS Dictionary-style detail popup
-- Mapbox + OpenStreetMap dual provider (toggle in map_widget.dart)
+- Single MapTiler map via flutter_map (no toggle, no Mapbox)
 - Auth flow (Supabase) with skip-auth for testing
-- Sample data: 24 jobs + 20 people around Isernia, Italy
-- Location service with Isernia default fallback
+- Sample data: 24 jobs + 20 people around Rome, Italy
+- Location service with Rome default fallback
 
 ### Just Cleaned (this session)
 - Removed: sidebar settings drawer, fake network/chat widget, labs screen (AR scanner, AI negotiator, crypto wallet, gig swipe, voice commander), modern UI mode, dual intro screens, glass container widgets, stories/chat/profile modern screens
