@@ -66,17 +66,7 @@ git branch -d claude/<branch-name>   # optional cleanup
 
 ### PUSH CADENCE — Every Few Stable Changes
 
-**Push to `origin/main` after every 2-3 stable changes, not just at session end.**
-
-A "stable change" = a commit where the app is not broken (no half-finished feature, no failing build).
-
-```bash
-git add <files>
-git commit -m "descriptive message"
-git push
-```
-
-Why: two agents rotate on this project. If the session cuts out before a push, the other agent starts from a stale `main`. Frequent pushes = zero lost work.
+**Push to `origin/main` after every 2-3 stable commits, not just at session end.** Session cuts happen — the other agent must never start from stale code.
 
 ---
 
