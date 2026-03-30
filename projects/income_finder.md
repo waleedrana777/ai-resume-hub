@@ -79,3 +79,6 @@ Instead of fake sample data, onboard users by showing **real popular Instagramme
 | 2026-03-29 | Cut 90% of features, focus on Rome Instagrammer discovery | Ship one real feature to App Store instead of 10 demos |
 | 2026-03-29 | Removed sidebar, labs, modern mode, chat widget, intro screens | Clutter removal — map is the product |
 | 2026-03-29 | Default location = Isernia, Italy | Developer's base location |
+| 2026-03-30 | Removed Mapbox + OSM, single MapTiler map | Simpler stack, no API key issues, free tier sufficient |
+| 2026-03-30 | All default locations → Rome (41.9028, 12.4964) | Rome is the target market, not Isernia |
+| 2026-03-30 | Added Model Routing Protocol to global resume | Opus for planning/review, Sonnet for execution — saves weekly token limit |
