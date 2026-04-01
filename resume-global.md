@@ -1,37 +1,49 @@
 # Global Dev Rules
 _Context: claude-mem. Rules: here. Updated: 2026-04-01._
 
+**SIMPLICITY WINS.** If it needs explaining, simplify it. The simplest working version is always correct.
+**SHIP OR DIE.** A working app on a real device beats a perfect app in your head.
+
 ## Skills
-`speed-ship` build/ship/create → 15min | `bug-fix` broken/failing → 5min | `drift-check` before everything → 1min | `simplify-percentage` bloat audit | `desktop-guardian` macOS GUI
-Default: `drift-check` then `speed-ship`. Broken? `bug-fix`. Source: `~/.claude/skills/` → `waleedrana777/claude-skills`
+`drift-check` 1min before everything | `speed-ship` 15min build/ship | `bug-fix` 5min kill | `simplify-percentage` bloat audit
+Source: `~/.claude/skills/` → `waleedrana777/claude-skills`
 
-## Git
-- **`main` only.** Worktree branches → merge to main immediately, delete branch.
-- Push every 2-3 stable commits. Session cuts lose unpushed work.
-- Before merge: `git diff main <branch> --name-status | grep "^D"` — recover deleted files.
+## What Done Looks Like
+Feature shipped to a real device = progress. Everything else is motion.
+Done = a user can complete the full journey without asking an obvious follow-up.
+If you strip a feature out and the app still works — it was good design. If you can't — it earned its place.
 
-## Quality Gate
-Flutter: `flutter analyze` | React: no console errors | Python: no unused imports | All: re-read changes, no debug/dead code/secrets.
+## App Shape — Before Any Code
+3–7 screens. One task solved in under 30 seconds. Explained in one sentence. No custom backend at launch. Doesn't fit? Split or simplify. Never grow scope before shipping.
+
+## Build Loop — Five Prompts, One Feature
+1. Spec: product spec, screen map, data model, monetization.
+2. Plan: file tree and implementation plan.
+3. Build: feature by feature with tests.
+4. Simplify: delete unnecessary code, reduce deps.
+5. Ship: release notes, screenshots, deploy.
+Repeat per feature. This loop is the engine.
+
+## Workflow
+`IDEA → SHAPE → BUILD → SHIP → LEARN → EXPAND → repeat`
+Ship beats perfect. Clone don't rebuild. Fallback everything. Standards first — custom earns its place after 3 repetitions.
 
 ## Principles
-No speculative code. Read before touching. Run and verify. One change per commit. UI must look right. Features before polish. Done = full journey. Scope before code. No hacks. Delete unused. Vanilla architecture. Minimal deps.
+No speculative code. Read before touching. Vanilla — no abstractions until forced.
+
+## UI Floor
+One obvious next step per screen. Never two competing primary actions. Core task ≤3 taps. Errors say what happened + what to do. Loading states always visible. Full creative latitude on: illustration, motion, empty states, brand, dark mode, glassmorphism — as long as the floor holds.
+
+## Quality — 60 Seconds Every Ship
+Works on real device. Survives no-internet + bad input + API failure. Readable in 60 seconds. Simpler than last version. No debug/dead code/secrets.
 
 ## Model Routing
-Opus: architecture, debug, tradeoffs, review, planning.
-Sonnet: scaffolding, boilerplate, git ops, styling, tests, refactors.
-Opus delegates rote work to `Agent(model:"sonnet")`. Sonnet escalates ambiguity to `Agent(model:"opus")`.
+Opus: architecture, debug, tradeoffs, planning. Sonnet: scaffolding, boilerplate, git, styling, tests.
+Opus delegates rote → `Agent(model:"sonnet")`. Sonnet escalates ambiguity → `Agent(model:"opus")`.
 
-## Architecture
-Leave code simpler: batch N+1, extract duplicates, cut unnecessary calls, surface errors. Don't optimize what isn't broken.
+## Git
+`main` only. Worktree branches → merge immediately, delete. One logical change per commit. Push every 2-3 stable commits. Before merge: `git diff main <branch> --name-status | grep "^D"` for deleted files.
 
 ## Releases
-R2 bucket `assist-releases`: `https://pub-e0444ef9ed9046748280b61f35081720.r2.dev` — protocol at `speed/r2-release-guide.md`
-Web: GitHub Pages + deploy.yml. Vite `base:'/<repo>/'` | Next.js `output:'export'` `basePath:'/<repo>'`
-Hub: `speed/releases-hub/` → `waleedrana777/releases-hub`
-
-## Flutter
-Before first build: (1) custom icon via `flutter_launcher_icons` (2) copy `release.sh` from `speed/ai_executive_assistant/assist_app/`
-`./release.sh apk|macos|all`
-
-## App Factory
-Run `python3 speed/PKA/scripts/refresh_app_map.py` when working on any app in `/speed/` or user mentions factory/ship/release. Re-run on tag/workflow/new app.
+R2 `assist-releases`: `https://pub-e0444ef9ed9046748280b61f35081720.r2.dev` — protocol at `speed/r2-release-guide.md`
+Web: GitHub Pages + deploy.yml. Hub: `waleedrana777/releases-hub`
